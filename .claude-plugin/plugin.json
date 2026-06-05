@@ -1,6 +1,6 @@
 {
   "name": "dd",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Drop the current clipboard (text or image) into Claude Code with /dd or /ㅇㅇ — no pasting.",
   "author": {
     "name": "fivetaku",

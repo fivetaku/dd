@@ -4,7 +4,7 @@ English | [한국어](README.ko.md)
 
 > Hand Claude Code a long log or a screenshot without pasting it into the chat.
 
-Working in Claude Code, you paste a lot: error logs when something breaks, a reference when you're building, a screenshot to show what you want. `dd` reads that straight off the clipboard, keeps it in a local file, and gives Claude only a short, secret-redacted summary.
+Working in Claude Code, you paste a lot: error logs when something breaks, a reference when you're building, a screenshot to show what you want. `dd` reads that straight off the clipboard, keeps it in a local file, and passes the conversation only what it needs — sometimes by analyzing big material in the background and bringing back just the conclusion.
 
 [Quick Start](#quick-start) • [Why dd?](#why-dd) • [How it works](#how-it-works) • [Features](#features) • [Commands](#commands) • [Requirements](#requirements)
 
@@ -80,6 +80,7 @@ The OS clipboard holds only the most recent copy (no history). `dd` always captu
 | Lazy reading | Reads by `size_class` so a huge paste never floods context |
 | Secret redaction | `api_key`, `Bearer`, `sk-`, `ghp_`, `xoxb-`, etc. masked in preview |
 | Auto cleanup | Captures older than `DD_RETENTION_DAYS` (default 7) deleted on each run |
+| Background analysis | Big logs or images get analyzed in a subagent, so only the result enters the chat |
 
 ---
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0 — 2026-06-06
+
+- Background analysis routing: for analyze-and-report tasks (summarize, explain, "what is this") on large text or an image, dd delegates the read to a background subagent and returns only the conclusion, so the raw content and images stay out of the main conversation. Tasks that work with the content (fix, build, iterate) still read in-session.
+
 ## 0.1.0 — 2026-06-06
 
 Initial release.

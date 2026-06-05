@@ -34,7 +34,17 @@ Judge whether the captured item matches intent, then:
 - Otherwise (it clearly fits the request, or fits what the conversation is already doing) → act directly, do not ask.
 Confirm with a normal question in your reply, not a tool. Do not over-ask: gate only on a real mismatch, since asking every time is annoying.
 
-### Step 5 — Read by size (text)
+### Step 5 — Decide where to read: this session or a background subagent
+**Type**: review
+Reading raw text or an image into THIS session adds tokens that get re-read every turn — the exact bloat dd exists to avoid. Pass the conversation only what it needs:
+
+- **Analyze-and-report** (summarize, explain, extract, "what is this", "what's the error") on a large item (`size_class` `large`/`huge`) or an image you only need described → delegate to a background subagent. Give it the manifest path and the user's request, have it read `content.txt` / `image.png` and return only its conclusion. The raw content and the image never enter this session.
+- **Work with the content here** (fix it, build from it, implement it, or you will keep referencing it over several turns) → read it in this session (Steps 6–7). The content is working material, so the cost is justified.
+- **Small text** → answer from the `preview`; no file read, no subagent.
+
+Rule of thumb: delegate when the useful answer is far smaller than the input (a 50KB log, a screenshot you just need described). Keep it in-session when you need the raw material to do the work. A delegated subagent still follows the size/image rules below, just in its own throwaway context.
+
+### Step 6 — Read by size (text)
 **Type**: prompt
 Lead with the manifest `preview`. Read the file only as needed so a huge paste never floods context:
 - `small` → answer from `preview`; do not open the file.
@@ -43,11 +53,11 @@ Lead with the manifest `preview`. Read the file only as needed so a huge paste n
 - `huge` → never read the whole file; search with `rg` for error keywords and read head/tail only.
 Never paste the full content into chat.
 
-### Step 6 — Images
+### Step 7 — Images
 **Type**: prompt
 For `kind: image`, Read the saved `image.png` to actually see it, then act on the request (e.g. "이런 느낌으로 만들어줘", "왜 깨져?"). Do not create an automatic summary for images. If `oversized` is true, avoid a full read — describe from metadata or ask the user to crop the area that matters.
 
-### Step 7 — Intent inference (no request)
+### Step 8 — Intent inference (no request)
 **Type**: prompt
 If `$ARGUMENTS` is empty, infer the task from the content AND the ongoing conversation, then state the inferred intent in one line BEFORE acting ("📋 에러 로그 감지 → 원인부터 볼게요"), so the user can redirect. Mapping: error/traceback → debug, code → explain/review, broken-UI image → diagnose, URL/doc → summarize. If it is still ambiguous after considering the conversation, fall back to the Step 4 confirm rather than guessing.
 
