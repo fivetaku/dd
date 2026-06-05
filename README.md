@@ -33,11 +33,9 @@ Working in Claude Code, you paste a lot: error logs when something breaks, a ref
 Put something on your clipboard, then type `/dd` (or `/ㅇㅇ`) with your request — no pasting needed:
 
 - **Image — Windows:** capture with `Win`+`Shift`+`S`, then `/dd 왜 이렇게 보여?` (the snip is already on the clipboard)
-- **Image — macOS:** capture with `Ctrl`+`Shift`+`Cmd`+`4` — the `Ctrl` sends it to the clipboard instead of saving a file — then `/dd 이 레퍼런스처럼 만들어줘`
+- **Image — macOS:** capture with `Shift`+`Cmd`+`4`, then `/dd 이 레퍼런스처럼 만들어줘` (one-time setup: make screenshots save to the clipboard — screenshot toolbar `Shift`+`Cmd`+`5` → **Options** → **Save to: Clipboard**)
 - **Long text / error log:** copy it, then `/dd 무슨 에러야?` — it never lands in the chat as a wall of text, so the session stays small
 - **No request:** just `/dd` — it reads the clipboard and continues from the conversation
-
-> **macOS tip:** to make a plain `Shift`+`Cmd`+`4` always go to the clipboard, open the screenshot toolbar (`Shift`+`Cmd`+`5`) → **Options** → **Save to: Clipboard**. Then you can skip the `Ctrl`.
 
 In a Korean IME you can type `/dd` as-is — it comes out as `/ㅇㅇ`, same thing. No language switching.
 
