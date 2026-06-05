@@ -2,9 +2,9 @@ English | [한국어](README.ko.md)
 
 # dd
 
-> **Stop saying "look at my clipboard." Just `/dd`.**
+> **Big paste, small footprint — drop the clipboard, not the whole thing.**
 
-`dd` drops whatever is on your clipboard right now — a screenshot, a design reference, an error log, a code snippet — straight into Claude Code, and acts on it. No pasting, no "use the image I just copied" boilerplate. The raw content stays in a local file; only a short summary enters the conversation.
+`dd` takes whatever is on your clipboard right now — a screenshot, a reference image, a long error log — and hands it to Claude Code as a compact reference instead of dumping it into the conversation. The full content stays in a local file; only a short, secret-redacted summary enters the chat. Your session stays small and fast, and `dd` even captures images a terminal can't paste.
 
 [Quick Start](#quick-start) • [Why dd?](#why-dd) • [How it works](#how-it-works) • [Features](#features) • [Commands](#commands) • [Requirements](#requirements)
 
@@ -28,25 +28,26 @@ English | [한국어](README.ko.md)
 
 (New commands only register after a restart.)
 
-### 4. Run
+### 4. Use it
 
-Copy something or take a screenshot, then:
+Put something on your clipboard, then type `/dd` (or `/ㅇㅇ`) with your request — no pasting needed:
 
-```
-/dd 이런 느낌으로 만들어줘
-/dd 왜 깨져?
-/dd            (no request — dd reads the clipboard and continues from the conversation)
-```
+- **Image — Windows:** capture with `Win`+`Shift`+`S`, then `/dd 왜 이렇게 보여?` (the snip is already on the clipboard)
+- **Image — macOS:** capture with `Ctrl`+`Shift`+`Cmd`+`4` — the `Ctrl` sends it to the clipboard instead of saving a file — then `/dd 이 레퍼런스처럼 만들어줘`
+- **Long text / error log:** copy it, then `/dd 무슨 에러야?` — it never lands in the chat as a wall of text, so the session stays small
+- **No request:** just `/dd` — it reads the clipboard and continues from the conversation
 
-In a Korean IME you can type `/dd` as-is — it comes out as `/ㅇㅇ`, which does the same thing. No language switching.
+> **macOS tip:** to make a plain `Shift`+`Cmd`+`4` always go to the clipboard, open the screenshot toolbar (`Shift`+`Cmd`+`5`) → **Options** → **Save to: Clipboard**. Then you can skip the `Ctrl`.
+
+In a Korean IME you can type `/dd` as-is — it comes out as `/ㅇㅇ`, same thing. No language switching.
 
 ---
 
 ## Why dd?
 
-- **Terminal Claude Code can't paste images.** Normally you'd save the screenshot to a file, find the path, and say "look at this file." `dd` automates exactly that: clipboard image → saved file → Claude sees it.
-- **No boilerplate.** You stop writing "the error I just copied" or "the reference image above." Just `/dd` and your request.
-- **Clean context.** The full text/image lives in `~/dd/`; only a manifest and a short, secret-redacted preview enter the chat.
+- **Long pastes bloat the conversation.** Paste a big log or file into chat and it sits there forever — taking space and getting re-read on every turn, so the session grows slow, costly, and hard to follow. `dd` keeps the full content in a local file and injects only a short summary, reading the rest lazily (by size) only when the task needs it.
+- **Pasting images doesn't always work.** Depending on your environment, a Claude Code session may not accept a pasted image at all. With `dd` you never paste: capture to the clipboard, type `/dd`, done. (It even resolves a copied image *file* to the real picture, not its icon.)
+- **No boilerplate.** Stop writing "the error I just copied" or "the reference image above." Just `/dd` and your request.
 - **Catches stale grabs.** The clipboard has no timestamp, so `dd` shows what it captured and asks before acting when the content looks unrelated to your request.
 
 ---
