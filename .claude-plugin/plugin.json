@@ -1,0 +1,22 @@
+{
+  "name": "dd",
+  "version": "0.1.0",
+  "description": "Drop the current clipboard (text or image) into Claude Code with /dd or /ㅇㅇ — no pasting.",
+  "author": {
+    "name": "fivetaku",
+    "url": "https://github.com/fivetaku"
+  },
+  "homepage": "https://github.com/fivetaku/dd",
+  "repository": "https://github.com/fivetaku/dd",
+  "license": "MIT",
+  "keywords": [
+    "clipboard",
+    "dd",
+    "image",
+    "screenshot",
+    "reference",
+    "paste",
+    "drop",
+    "capture"
+  ]
+}
