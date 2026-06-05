@@ -19,12 +19,11 @@ The command runs `python3 "${CLAUDE_PLUGIN_ROOT}/skills/dd/scripts/dd_clipboard.
 **Type**: review
 Check `ok` first. If it is false, show the `errors[]` to the user verbatim and STOP. The clipboard is empty or unsupported — do not proceed with empty context or invent content. Example reply: "클립보드가 비어있어요. 복사하고 다시 /dd 해주세요." This matters because the clipboard usually holds *something*; a true empty is rare, so a real `ok:false` is worth surfacing.
 
-### Step 3 — Show what was captured
+### Step 3 — Identify the capture and the task
 **Type**: prompt
-Show one short line so the user can confirm it is the intended item:
-- text → `kind`, `size_class`, the first ~2 lines of `preview`
-- image → `image, <KB>, saved to <path>`
-The clipboard keeps only the most recent copy and has no history or timestamp, so an item copied long ago can still be sitting there. This one line is the user's only chance to catch a stale or wrong grab.
+Show one short line of what was captured (text → `kind`, `size_class`, first ~2 lines of `preview`; image → `image, <KB>, saved to <path>`) so the user can catch a wrong grab. The clipboard keeps only the most recent copy with no timestamp, so something copied long ago can still be sitting there — this line is their only check.
+
+Then settle the task. It is `$ARGUMENTS`; if that is empty, infer it from the content AND the ongoing conversation, and say the inferred intent in one line before acting ("📋 에러 로그 감지 → 원인부터 볼게요"). Mapping: error/traceback → debug, code → explain/review, broken-UI image → diagnose, URL/doc → summarize. If it stays ambiguous, fall back to the Step 4 confirm rather than guessing. The task you settle here is what drives Step 5's routing.
 
 ### Step 4 — Confirm gate (only when it looks wrong)
 **Type**: review
@@ -34,15 +33,27 @@ Judge whether the captured item matches intent, then:
 - Otherwise (it clearly fits the request, or fits what the conversation is already doing) → act directly, do not ask.
 Confirm with a normal question in your reply, not a tool. Do not over-ask: gate only on a real mismatch, since asking every time is annoying.
 
-### Step 5 — Decide where to read: this session or a background subagent
+### Step 5 — Context routing gate
 **Type**: review
-Reading raw text or an image into THIS session adds tokens that get re-read every turn — the exact bloat dd exists to avoid. Pass the conversation only what it needs:
+Decide whether the captured item should be read in the main session or delegated to a background/sub-agent context. The goal is to keep the active conversation light: the main session should receive only the information needed to continue the user's task.
 
-- **Analyze-and-report** (summarize, explain, extract, "what is this", "what's the error") on a large item (`size_class` `large`/`huge`) or an image you only need described → delegate to a background subagent. Give it the manifest path and the user's request, have it read `content.txt` / `image.png` and return only its conclusion. The raw content and the image never enter this session.
-- **Work with the content here** (fix it, build from it, implement it, or you will keep referencing it over several turns) → read it in this session (Steps 6–7). The content is working material, so the cost is justified.
-- **Small text** → answer from the `preview`; no file read, no subagent.
+Use a background/sub-agent context when:
+- the request is mainly analysis, summary, extraction, explanation, or diagnosis
+- the captured text is `large` or `huge`
+- the captured image is one-off reference material and the user only asks what it means, why it looks wrong, or what should change
+- the task can be answered with a compact conclusion, checklist, error cause, or visual brief
 
-Rule of thumb: delegate when the useful answer is far smaller than the input (a 50KB log, a screenshot you just need described). Keep it in-session when you need the raw material to do the work. A delegated subagent still follows the size/image rules below, just in its own throwaway context.
+In that case the sub-agent reads `content.txt` or `image.png`, analyzes it, and returns only the useful result to the main session. Do not copy the full raw content back into the main conversation.
+
+Use the main session directly when:
+- the captured item is small enough to answer from the `preview`
+- the user wants the repo edited based on the capture
+- the capture is referenced repeatedly during implementation
+- exact code, exact lines, or exact visual details are needed while modifying files
+
+**Hybrid rule:** if the task needs implementation but the capture is large, first have a sub-agent write a compact brief (`dd_brief.md`, `error_summary.md`, or `visual_reference.md`). Then the main session works from that brief and only reads focused slices of the original when necessary.
+
+Never read a large or huge capture into the main session just because it exists. Read only what the current task needs. The reading rules below (Steps 6–7) apply in whichever context you chose.
 
 ### Step 6 — Read by size (text)
 **Type**: prompt
@@ -57,12 +68,8 @@ Never paste the full content into chat.
 **Type**: prompt
 For `kind: image`, Read the saved `image.png` to actually see it, then act on the request (e.g. "이런 느낌으로 만들어줘", "왜 깨져?"). Do not create an automatic summary for images. If `oversized` is true, avoid a full read — describe from metadata or ask the user to crop the area that matters.
 
-### Step 8 — Intent inference (no request)
-**Type**: prompt
-If `$ARGUMENTS` is empty, infer the task from the content AND the ongoing conversation, then state the inferred intent in one line BEFORE acting ("📋 에러 로그 감지 → 원인부터 볼게요"), so the user can redirect. Mapping: error/traceback → debug, code → explain/review, broken-UI image → diagnose, URL/doc → summarize. If it is still ambiguous after considering the conversation, fall back to the Step 4 confirm rather than guessing.
-
 ## Why this shape
-The clipboard is a single most-recent slot with no timestamp, so freshness cannot be measured — only judged by whether the content fits the intent (Steps 3–4). Reading lazily by `size_class` (Step 5) keeps token cost low, which is a side benefit; the main job is simply handing the clipboard to Claude.
+The clipboard is a single most-recent slot with no timestamp, so freshness cannot be measured — only judged by whether the content fits the intent (Steps 3–4). Reading lazily by `size_class` (Step 6) keeps token cost low, which is a side benefit; the main job is simply handing the clipboard to Claude — and, for heavy items, handing it to a sub-agent and keeping only the conclusion (Step 5).
 
 ## Security
 - The script redacts `api_key`/`token`/`password`/`Bearer`/`sk-`/`ghp_`/`xoxb-` patterns in the preview. The raw file on disk is not redacted, so do not echo full raw content back unnecessarily.
