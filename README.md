@@ -2,9 +2,9 @@ English | [한국어](README.ko.md)
 
 # dd
 
-> **Big paste, small footprint — drop the clipboard, not the whole thing.**
+> Hand Claude Code a long log or a screenshot without pasting it into the chat.
 
-`dd` takes whatever is on your clipboard right now — a screenshot, a reference image, a long error log — and hands it to Claude Code as a compact reference instead of dumping it into the conversation. The full content stays in a local file; only a short, secret-redacted summary enters the chat. Your session stays small and fast, and `dd` even captures images a terminal can't paste.
+Working in Claude Code, you paste a lot: error logs when something breaks, a reference when you're building, a screenshot to show what you want. `dd` reads that straight off the clipboard, keeps it in a local file, and gives Claude only a short, secret-redacted summary.
 
 [Quick Start](#quick-start) • [Why dd?](#why-dd) • [How it works](#how-it-works) • [Features](#features) • [Commands](#commands) • [Requirements](#requirements)
 
@@ -45,10 +45,15 @@ In a Korean IME you can type `/dd` as-is — it comes out as `/ㅇㅇ`, same thi
 
 ## Why dd?
 
-- **Long pastes bloat the conversation.** Paste a big log or file into chat and it sits there forever — taking space and getting re-read on every turn, so the session grows slow, costly, and hard to follow. `dd` keeps the full content in a local file and injects only a short summary, reading the rest lazily (by size) only when the task needs it.
-- **Pasting images doesn't always work.** Depending on your environment, a Claude Code session may not accept a pasted image at all. With `dd` you never paste: capture to the clipboard, type `/dd`, done. (It even resolves a copied image *file* to the real picture, not its icon.)
-- **No boilerplate.** Stop writing "the error I just copied" or "the reference image above." Just `/dd` and your request.
-- **Catches stale grabs.** The clipboard has no timestamp, so `dd` shows what it captured and asks before acting when the content looks unrelated to your request.
+Working in Claude Code, you paste all the time. An error log when something breaks, a reference when you're building, a screenshot to show the look you're after. Pasting it all straight into the chat runs into two problems.
+
+Long text eats the conversation. Drop a big log in once and it stays there, taking up room and getting re-read every turn, so the session slowly gets slower and pricier. `dd` keeps the full text in a file, hands Claude a short summary, and reads more only when the task needs it.
+
+Images often won't paste at all. Depending on your setup, Claude Code may not take a pasted image. `dd` reads the clipboard directly, so you just capture and type `/dd`. A copied image file comes in as the real picture, not its icon.
+
+You also stop repeating yourself: no "the error I just copied" or "the reference above." And if `dd` grabs the wrong thing (the clipboard has no timestamp), it shows what it got and asks first.
+
+The name `dd` doesn't stand for anything. You reach for it often and typing something long every time is a pain, so it's just two quick taps. (In a Korean IME those same keys come out as `ㅇㅇ`, which works the same.)
 
 ---
 
@@ -112,6 +117,6 @@ MIT
 
 <div align="center">
 
-**Copy it. `/dd` it. Done.**
+Copy something, then `/dd`.
 
 </div>
