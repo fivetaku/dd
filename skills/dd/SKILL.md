@@ -68,6 +68,14 @@ Never paste the full content into chat.
 **Type**: prompt
 For `kind: image`, Read the saved `image.png` to actually see it, then act on the request (e.g. "이런 느낌으로 만들어줘", "왜 깨져?"). Do not create an automatic summary for images. If `oversized` is true, avoid a full read — describe from metadata or ask the user to crop the area that matters.
 
+## Language
+Reply in the user's language, decided fresh each time — nothing is stored:
+- The request has text → reply in that text's language (`/dd what is this` → English; `/dd 이거 뭐야` → Korean).
+- No request → reply in the language the user has been using in this conversation (it is already in context).
+- A fresh session whose first message is a bare `/dd` (no request text and no prior conversation) → reply in English, or ask once which language to use.
+
+Never default to Korean just because the plugin was authored in Korea.
+
 ## Why this shape
 The clipboard is a single most-recent slot with no timestamp, so freshness cannot be measured — only judged by whether the content fits the intent (Steps 3–4). Reading lazily by `size_class` (Step 6) keeps token cost low, which is a side benefit; the main job is simply handing the clipboard to Claude — and, for heavy items, handing it to a sub-agent and keeping only the conclusion (Step 5).
 

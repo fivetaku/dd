@@ -81,6 +81,7 @@ The OS clipboard holds only the most recent copy (no history). `dd` always captu
 | Secret redaction | `api_key`, `Bearer`, `sk-`, `ghp_`, `xoxb-`, etc. masked in preview |
 | Auto cleanup | Captures older than `DD_RETENTION_DAYS` (default 7) deleted on each run |
 | Background analysis | Big logs or images get analyzed in a subagent, so only the result enters the chat |
+| Replies in your language | Answers in the language of your request, or the conversation's language when there's none |
 
 ---
 
