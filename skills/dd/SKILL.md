@@ -45,6 +45,10 @@ Use a background/sub-agent context when:
 
 In that case the sub-agent reads `content.txt` or `image.png`, analyzes it, and returns only the useful result to the main session. Do not copy the full raw content back into the main conversation.
 
+**Model pin:** always spawn dd sub-agents with `model: sonnet` (e.g. `Task(..., model="sonnet")`). Never let the sub-agent inherit the main session model — dd's delegated work (summaries, error triage, visual briefs) does not need an expensive model, and inheriting Opus from the main session wastes tokens.
+
+**Diagnosis guidance:** when delegating error/log diagnosis, include this instruction in the sub-agent prompt: locate the FIRST anomaly in the timeline, then look at what changed immediately BEFORE it (deploys, config reloads, version changes, flag flips); treat the error flood at the tail as a consequence, not the cause. Without this, the sub-agent tends to stop at the surface mechanism and prescribe symptom-level fixes.
+
 Use the main session directly when:
 - the captured item is small enough to answer from the `preview`
 - the user wants the repo edited based on the capture

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2 — 2026-06-10
+
+- Background sub-agents are now pinned to `model: sonnet` instead of inheriting the main session model — delegated work (summaries, error triage, visual briefs) doesn't need an expensive model. Validated against two buried-root-cause log scenarios.
+- Error/log diagnosis delegation now includes first-anomaly guidance (find what changed right before the first anomaly — deploys, config reloads, flag flips — and treat the tail error flood as a consequence). This was the difference between symptom-level and root-cause diagnoses in testing.
+
 ## 0.2.1 — 2026-06-07
 
 - Language: reply in the language of the request; with no request, reply in the language of the ongoing conversation. No hardcoded default and nothing stored — the language is inferred fresh each time. A fresh session's bare `/dd` with no context falls back to English.
