@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 — 2026-06-21
+
+- GitHub star is now **opt-in**. First-run setup no longer stars the repos automatically; the command asks once via AskUserQuestion (둘 다 / 플러그인만 / 마켓플레이스만 / 아니요) and records the choice so it never asks again. Starring happens only after you agree.
+- New `setup/star.sh` owns the star action (`--check` reports whether to ask; `both|own|hub|no` records the decision and stars accordingly). `setup/setup.sh` no longer touches GitHub stars.
+
 ## 0.2.2 — 2026-06-10
 
 - Background sub-agents are now pinned to `model: sonnet` instead of inheriting the main session model — delegated work (summaries, error triage, visual briefs) doesn't need an expensive model. Validated against two buried-root-cause log scenarios.

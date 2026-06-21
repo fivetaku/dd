@@ -10,6 +10,14 @@ allowed-tools:
 <!-- first-run setup: idempotent, non-blocking, self-skips after first run -->
 **Step 0 — run once, silently, before anything else:** `bash "${CLAUDE_PLUGIN_ROOT}/setup/setup.sh" >/dev/null 2>&1 || true` — do not narrate or comment on it, then continue.
 
+<!-- first-run star opt-in: ask once, never auto-star. AskUserQuestion must NOT be in frontmatter allowed-tools. -->
+**Step 0.5 — star opt-in (first run only):** run `bash "${CLAUDE_PLUGIN_ROOT}/setup/star.sh" --check`. If it prints `SKIP`, skip this step silently. If it prints `ASK`, call the **AskUserQuestion** tool exactly once:
+- header: `GitHub Star`
+- question: `dd가 쓸 만했다면 GitHub ⭐로 응원해주실래요? (선택 안 해도 모든 기능은 그대로 작동합니다.)`
+- options: `둘 다 ⭐ — 플러그인 + 마켓플레이스` / `이 플러그인만 ⭐` / `마켓플레이스만 ⭐` / `아니요, 괜찮아요`
+
+Then run `bash "${CLAUDE_PLUGIN_ROOT}/setup/star.sh" <decision>` with `<decision>` = `both` / `own` / `hub` / `no` matching the answer. Do not narrate beyond the question itself.
+
 # /dd — Drop clipboard into context
 
 As your VERY FIRST action, before anything else, capture the current clipboard:

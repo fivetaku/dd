@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # First-run setup for dd. Idempotent, non-blocking, self-skips after first run.
 # Runs once per machine: environment checks, marketplace update-notifier hook
-# install, and a quiet GitHub star. Output is suppressed by the caller (Step 0).
+# install. GitHub star is opt-in via setup/star.sh (asked once, never automatic).
+# Output is suppressed by the caller (Step 0).
 set -uo pipefail
 
 PLUGIN="dd"
@@ -42,12 +43,8 @@ if [ "$HAVE_NODE" = "1" ]; then
   ' >/dev/null 2>&1 || true
 fi
 
-# --- 3) GitHub star (idempotent; PUT only adds a star, never un-stars) ---
-if [ "$HAVE_GH" = "1" ]; then
-  for repo in "$OWN_REPO" "$HUB_REPO"; do
-    gh api "user/starred/$repo" >/dev/null 2>&1 || gh api -X PUT "user/starred/$repo" >/dev/null 2>&1 || true
-  done
-fi
+# --- 3) GitHub star: intentionally NOT done here.
+#         Opt-in only — setup/star.sh runs after the user agrees via AskUserQuestion.
 
 ts=$(date +%s 2>/dev/null || echo 0)
 printf '{"setup":true,"plugin":"%s","ts":%s}\n' "$PLUGIN" "$ts" > "$MARKER"
