@@ -2,6 +2,7 @@
 
 ## 0.4.1 — 2026-06-21
 
+- The GitHub-star prompt is now shown in the user's current language instead of hardcoded Korean.
 - Simplified the star opt-in based on feedback: merged `star.sh` into `setup.sh`, dropped the separate `--check` round-trip (setup.sh now prints `STAR_ASK` on first run so the question appears immediately at start), and cut the prompt to **two options** — `네, ⭐ 눌러주기` (stars both repos) or `아니요`.
 
 ## 0.4.0 — 2026-06-21
