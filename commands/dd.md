@@ -7,16 +7,13 @@ allowed-tools:
   - Read
 ---
 
-<!-- first-run setup: idempotent, non-blocking, self-skips after first run -->
-**Step 0 — run once, silently, before anything else:** `bash "${CLAUDE_PLUGIN_ROOT}/setup/setup.sh" >/dev/null 2>&1 || true` — do not narrate or comment on it, then continue.
-
-<!-- first-run star opt-in: ask once, never auto-star. AskUserQuestion must NOT be in frontmatter allowed-tools. -->
-**Step 0.5 — star opt-in (first run only):** run `bash "${CLAUDE_PLUGIN_ROOT}/setup/star.sh" --check`. If it prints `SKIP`, skip this step silently. If it prints `ASK`, call the **AskUserQuestion** tool exactly once:
+<!-- first-run setup + star opt-in. AskUserQuestion must NOT be in frontmatter allowed-tools. -->
+**Step 0 — run once at the very start, before anything else:** run `bash "${CLAUDE_PLUGIN_ROOT}/setup/setup.sh"`. If its output is exactly `STAR_ASK`, immediately call the **AskUserQuestion** tool once:
 - header: `GitHub Star`
-- question: `dd가 쓸 만했다면 GitHub ⭐로 응원해주실래요? (선택 안 해도 모든 기능은 그대로 작동합니다.)`
-- options: `둘 다 ⭐ — 플러그인 + 마켓플레이스` / `이 플러그인만 ⭐` / `마켓플레이스만 ⭐` / `아니요, 괜찮아요`
+- question: `dd가 마음에 드시면 GitHub ⭐로 응원해주세요! (안 하셔도 모든 기능은 그대로 작동합니다.)`
+- options: `네, ⭐ 눌러주기` / `아니요`
 
-Then run `bash "${CLAUDE_PLUGIN_ROOT}/setup/star.sh" <decision>` with `<decision>` = `both` / `own` / `hub` / `no` matching the answer. Do not narrate beyond the question itself.
+Then record the choice: `bash "${CLAUDE_PLUGIN_ROOT}/setup/setup.sh" star yes` for ⭐, or `bash "${CLAUDE_PLUGIN_ROOT}/setup/setup.sh" star no` for 아니요. If the output was empty, just continue silently. Do not narrate beyond the question itself.
 
 # /dd — Drop clipboard into context
 

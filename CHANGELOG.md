@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 — 2026-06-21
+
+- Simplified the star opt-in based on feedback: merged `star.sh` into `setup.sh`, dropped the separate `--check` round-trip (setup.sh now prints `STAR_ASK` on first run so the question appears immediately at start), and cut the prompt to **two options** — `네, ⭐ 눌러주기` (stars both repos) or `아니요`.
+
 ## 0.4.0 — 2026-06-21
 
 - GitHub star is now **opt-in**. First-run setup no longer stars the repos automatically; the command asks once via AskUserQuestion (둘 다 / 플러그인만 / 마켓플레이스만 / 아니요) and records the choice so it never asks again. Starring happens only after you agree.
