@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/fivetaku/dd",
   "repository": "https://github.com/fivetaku/dd",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
     "clipboard",
     "dd",
