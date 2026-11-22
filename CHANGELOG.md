@@ -1,6 +1,10 @@
 # Changelog
 
 
+## 0.4.6 — 2026-11-22
+- Clipboard-only triggers, single policy source
+- Update notifier refresh + auto-update consent
+
 ## 0.4.5 — 2026-10-14
 - **gptaku-core routing tuned.** Adjusted keywords and exclusions in `routing.json` against false matches found in real conversations. Takes effect together with gptaku-core 0.1.1.
 
