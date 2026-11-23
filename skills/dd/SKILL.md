@@ -21,6 +21,8 @@ If the output is empty, just continue silently. Do not narrate beyond the questi
 
 The user copied or screenshotted something — usually a design reference or screenshot, sometimes an error log, code, or URL — and wants it used as the reference for their request. `/dd` and `/ㅇㅇ` capture the live clipboard into `~/dd/` and inject only a manifest summary, keeping the conversation clean.
 
+Codex에서는 `${CLAUDE_PLUGIN_ROOT}`를 이 플러그인 루트(이 SKILL.md에서 두 단계 위 폴더)로 바꿔 읽고, Step 0(첫 실행 설정)은 건너뛰며, Agent 도구·이미지 열기는 이 폴더의 `references/codex.md`를 따른다.
+
 ## Workflow
 
 ### Step 1 — Capture (always first)

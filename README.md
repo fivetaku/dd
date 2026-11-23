@@ -28,6 +28,8 @@ Working in Claude Code, you paste a lot: error logs when something breaks, a ref
 /plugin install dd
 ```
 
+Codex: `codex plugin marketplace add fivetaku/gptaku_plugins`, then `codex plugin add dd@gptaku-plugins`.
+
 ### 3. Restart Claude Code
 
 (New commands only register after a restart.)

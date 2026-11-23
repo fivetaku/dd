@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.0 — 2026-11-23
+- Codex에서도 같은 스킬로 동작: `skills/dd/references/codex.md` 추가(경로 치환, 첫 실행 설정 생략, 서브에이전트·이미지 열기 대체 방법). Claude Code 동작은 그대로.
+
 
 ## 0.4.6 — 2026-11-22
 - Clipboard-only triggers, single policy source
